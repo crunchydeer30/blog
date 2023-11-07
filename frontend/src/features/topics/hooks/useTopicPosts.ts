@@ -14,9 +14,9 @@ const useTopicPosts = (query: TopicPostsQueryParams) => {
     isFetchingNextPage,
     error
   } = useInfiniteQuery({
-    queryKey: ['topic', query.topic],
+    queryKey: ['topic', 'posts', query.topic],
     queryFn: async ({ pageParam = 1 }) =>
-      await apiPosts.getFollowing({ ...query, page: pageParam }),
+      await apiPosts.getAll({ ...query, page: pageParam }),
     getNextPageParam: (lastPage) => lastPage?.meta.next || undefined,
     initialPageParam: 1,
   });

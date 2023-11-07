@@ -12,11 +12,11 @@ datasource db {
 model User {
   id       String @id @default(uuid())
   email    String @unique
-  username String @unique @db.VarChar(12)
+  username String @unique @db.VarChar(15)
   password String
   role     Role   @default(USER)
 
-  displayName  String @default("User") @db.VarChar(20)
+  displayName  String @default("User") @db.VarChar(25)
   profileImage String? @default("https://res.cloudinary.com/dmiweodlx/image/upload/v1698406002/buzcgbmbyz1n5holjlti.jpg")
   personalInfo String? @db.VarChar(255)
 
@@ -41,7 +41,7 @@ model Subscription {
 
 model Post {
   id          String   @id @default(uuid())
-  title       String   @db.VarChar(65)
+  title       String   @db.VarChar(80)
   content     String
   createdAt   DateTime @default(now())
   thumbnail   String

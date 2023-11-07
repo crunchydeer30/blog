@@ -7,7 +7,7 @@ const ProfileAbout = () => {
   return (
     <section>
       {profile?.personalInfo ? (
-        <p>{profile.personalInfo}</p>
+        <p className='text-xl'>{profile.personalInfo}</p>
       ) : (
         <NotFoundText>User hasn't provided any personal info</NotFoundText>
       )}

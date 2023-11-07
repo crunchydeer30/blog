@@ -8,6 +8,12 @@ const getById = async (id: string): Promise<Topic> => {
   return response.data;
 };
 
+const getAll = async (): Promise<Topic[]> => {
+  const response = await axios.get(BASE_URL);
+  return response.data;
+}
+
 export default {
+  getAll,
   getById
 };

@@ -10,7 +10,7 @@ class createPostDto implements Omit<Post, 'id' |'createdAt' | 'authorId'> {
 
   @IsNotEmpty()
   @MinLength(20)
-  @MaxLength(80)
+  @MaxLength(150)
   description!: string;
 
   @IsNotEmpty()

@@ -23,7 +23,7 @@ interface FeedProps {
   isError: boolean;
 }
 
-const Feed = (props: FeedProps) => {
+const PostFeed = (props: FeedProps) => {
   if (props.isLoading) return <PostFeedLoader />;
   if(props.isError) return <NotFoundText>Something went wrong!</NotFoundText>;
   if (!props.posts?.length) return <NotFoundText>No posts yet</NotFoundText>;
@@ -47,4 +47,4 @@ const Feed = (props: FeedProps) => {
   );
 };
 
-export default Feed;
+export default PostFeed;

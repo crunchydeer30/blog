@@ -9,11 +9,12 @@ import PageHeading from '../../../UI/PageHeading';
 import CropImageInput from '../../imageCropper/components/CropImageInput';
 import Button from '../../../UI/Elements/Button/Button';
 import TextArea from '../../../UI/Form/TextArea';
+import useTopics from '../../topics/hooks/useTopics';
 
 const CreatePostForm = () => {
   const { createPost } = useCreatePost();
 
-  const topicId = '1aacb32d-71a1-4adf-8142-795141dcf33e';
+  const [topicId, setTopicId] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
@@ -25,6 +26,8 @@ const CreatePostForm = () => {
     const newPost = { title, description, content, header, thumbnail, topicId };
     createPost(newPost);
   };
+
+  const { topics } = useTopics();
 
   return (
     <section>
@@ -41,6 +44,24 @@ const CreatePostForm = () => {
             onChange={setTitle}
             name="title"
           />
+        </FormGroup>
+
+        <FormGroup classes={['gap-6']}>
+          <InputLabel htmlFor="topic" classes={['text-lg']}>
+            Post Topic
+          </InputLabel>
+          <select
+            id="topic"
+            name="topic"
+            onChange={(e) => setTopicId(e.target.value)}
+            className="bg-white border border-gray-300 rounded-lg py-2 px-3"
+          >
+            {topics?.map((topic) => (
+              <option key={topic.id} value={topic.id}>
+                {topic.title}
+              </option>
+            ))}
+          </select>
         </FormGroup>
 
         <FormGroup classes={['gap-6']}>

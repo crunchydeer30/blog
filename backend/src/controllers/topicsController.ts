@@ -16,6 +16,15 @@ topicRouter.get('/', async (_req, res, next) => {
   }
 });
 
+topicRouter.get('/:id', async (req, res, next) => {
+  try {
+    const topic = await topicsService.getById(req.params.id);
+    return res.status(200).json(topic);
+  } catch (e) {
+    return next(e);
+  }
+});
+
 topicRouter.post(
   '/',
   validationMiddleware(CreateTopicDto),

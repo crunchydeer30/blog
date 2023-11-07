@@ -3,8 +3,8 @@ import { Topic } from "@prisma/client";
 
 class CreateTopicDto implements Omit<Topic, "id"> {
   @IsNotEmpty()
-  @MinLength(4)
-  @MaxLength(20)
+  @MinLength(3)
+  @MaxLength(15)
   title!: string;
 }
 
