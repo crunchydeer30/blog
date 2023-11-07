@@ -30,8 +30,4 @@ app.use('/api/comments', commentsRouter);
 
 app.use(errorHandler);
 
-app.get('/', (_req, res) => {
-  res.send('Hello World!');
-});
-
 export default app;

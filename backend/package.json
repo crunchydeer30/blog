@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev src/index.ts",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+    "build": "tsc -p tsconfig.json",
+    "start": "node build/index.js"
   },
   "keywords": [],
   "author": "",
