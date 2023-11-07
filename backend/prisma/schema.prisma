@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  username String @unique @db.VarChar(12)
+  password String
+  role     Role   @default(USER)
+
+  displayName  String @default("User") @db.VarChar(20)
+  profileImage String? @default("https://res.cloudinary.com/dmiweodlx/image/upload/v1698406002/buzcgbmbyz1n5holjlti.jpg")
+  personalInfo String? @db.VarChar(255)
+
+  Posts    Post[]
+  bookmarks Bookmark[] @relation("bookmarks")
+
+  followedBy Subscription[] @relation("following")
+  following  Subscription[] @relation("follower")
+
+  comments  Comment[]
+}
+
+model Subscription {
+  follower    User     @relation("follower", fields: [followerId], references: [id])
+  followerId  String
+  following   User     @relation("following", fields: [followingId], references: [id])
+  followingId String
+  createdAt   DateTime @default(now())
+
+  @@id([followerId, followingId])
+}
+
+model Post {
+  id          String   @id @default(uuid())
+  title       String   @db.VarChar(65)
+  content     String
+  createdAt   DateTime @default(now())
+  thumbnail   String
+  header      String
+  description String
+
+  topic   Topic  @relation(fields: [topicId], references: [id])
+  topicId String
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  comments     Comment[]
+  bookmarkedBy Bookmark[] @relation("bookmarkedBy")
+}
+
+model Bookmark {
+  user   User   @relation("bookmarks", fields: [userId], references: [id])
+  userId String
+  post   Post   @relation("bookmarkedBy", fields: [postId], references: [id])
+  postId String
+
+  @@id([userId, postId])
+}
+
+model Comment {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
+  userId String
+
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Topic {
+  id    String @id @default(uuid())
+  title String @unique @db.VarChar(15)
+  Posts Post[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
