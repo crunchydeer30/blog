@@ -1,6 +1,9 @@
-import PostOverview from "./PostOverview";
+import useReadingToday from "../../../features/posts/hooks/useReadingToday";
+import PostItemSM from "../../../features/posts/components/PostItemSM";
 
 const ReadingToday = () => {
+  const { posts } = useReadingToday();
+
   return (
     <section className="flex flex-col gap-6">
       <p className="flex items-center font-semibold gap-2 text-lg">
@@ -8,9 +11,9 @@ const ReadingToday = () => {
         What We're Reading Today
       </p>
       <section className="flex flex-col gap-6">
-        <PostOverview />
-        <PostOverview />
-        <PostOverview />
+        {posts?.data.map((post) => (
+          <PostItemSM key={post.id} post={post} />
+        ))}
       </section>
     </section>
   );
