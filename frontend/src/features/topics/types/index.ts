@@ -5,3 +5,7 @@ export interface TopicPostsQueryParams {
   pageSize?: number;
   topic: string;
 }
+
+export interface TopicQueryParams {
+  q?: string;
+}

@@ -9,6 +9,7 @@ const SearchNav = () => {
     <FeedNav>
       <FeedNavLink to={`/search/posts?q=${q}`}>Posts</FeedNavLink>
       <FeedNavLink to={`/search/authors?q=${q}`}>Authors</FeedNavLink>
+      <FeedNavLink to={`/search/topics?q=${q}`}>Topics</FeedNavLink>
     </FeedNav>
   )
 }

@@ -15,7 +15,7 @@ const buildUserQuery = (query: object) => {
 
   if ('q' in query)
     params.push({
-      displayName: { contains: query.q as string, mode: 'insensitive' },
+      displayName: { contains: query.q as string, mode: 'insensitive' as const },
     });
 
   return { params: { AND: params } };

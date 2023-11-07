@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { PostItem as IPostItem } from '../types';
-import TopicLink from '../../../UI/TopicLink';
+import TopicLink from '../../topics/components/TopicLink';
 import useBookmarksIDs from '../../bookmarks/hooks/useBookmarsksIDs';
 import useCreateBookmark from '../../bookmarks/hooks/useCreateBookmark';
 import useDeleteBookmark from '../../bookmarks/hooks/useDeleteBookmark';
@@ -67,12 +67,7 @@ const PostItem = ({ post }: PostItemProps) => {
         </section>
         <section className="flex gap-4 items-center justify-between">
           <div className="flex gap-4 items-center">
-            <TopicLink
-              to={`/topics/${post.topic.id}`}
-              classes={['text-xs font-light']}
-            >
-              {post.topic.title}
-            </TopicLink>
+            <TopicLink topic={post.topic} />
             <p className="text-secondary font-light text-sm">3 min read</p>
           </div>
           <div>
@@ -119,12 +114,7 @@ const PostItem = ({ post }: PostItemProps) => {
         <p className="font-light line-clamp-2">{post.description}</p>
         <section className="flex gap-4 items-center justify-between">
           <div className="flex gap-4 items-center">
-            <TopicLink
-              to={`/topics/${post.topic.id}`}
-              classes={['text-sm, font-light']}
-            >
-              {post.topic.title}
-            </TopicLink>
+            <TopicLink topic={post.topic} />
             <p className="text-secondary font-light text-sm">3 min read</p>
             <p className="text-secondary font-light text-sm">
               Selected for you

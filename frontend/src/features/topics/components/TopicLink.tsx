@@ -1,9 +1,8 @@
-import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { Topic } from '../../../types';
 
 interface TopicLinkProps {
-  children: ReactNode;
-  to: string;
+  topic: Topic;
   classes?: string[];
 }
 
@@ -23,8 +22,8 @@ const TopicLink = (props: TopicLinkProps) => {
   if (props.classes?.length) classNames.push(...props.classes);
 
   return (
-    <Link to={props.to} className={classNames.join(' ')}>
-      {props.children}
+    <Link to={`/topics/${props.topic.id}`} className={classNames.join(' ')}>
+      {props.topic.title}
     </Link>
   );
 };

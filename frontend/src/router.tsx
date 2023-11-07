@@ -26,6 +26,7 @@ import FollowingList from './features/subscriptions/components/FollowingList';
 import SearchPage from './pages/SearchPage';
 import SearchPosts from './features/search/components/SearchPosts';
 import SearchUsers from './features/search/components/SearchUsers';
+import SearchTopics from './features/search/components/SearchTopics';
 import TopicPage from './pages/TopicPage';
 
 const router = createBrowserRouter(
@@ -79,6 +80,7 @@ const router = createBrowserRouter(
       <Route path="/search" element={<SearchPage />}>
         <Route path='posts' element={<SearchPosts />} />
         <Route path='authors' element={<SearchUsers />} />
+        <Route path='topics' element={<SearchTopics />} />
       </Route>
       <Route path="/topics">
         <Route path=':id' element={<TopicPage />} />

@@ -14,7 +14,7 @@ const FeedNavLink = (props: FeedNavLinkProps) => {
       end
       className={({ isActive }) =>
         [
-          'font-light text-lg transition hover:text-primary border-b-2 hover:border-primary py-2 px-[4px]',
+          'font-light text-lg transition hover:text-primary border-b-2 hover:border-primary py-2 px-1',
           isActive
             ? 'text-primary font-medium border-b-2 border-primary'
             : 'text-secondary border-transparent',

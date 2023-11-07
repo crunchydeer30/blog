@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { PostItem } from '../types';
-import TopicLink from '../../../UI/TopicLink';
+import TopicLink from '../../topics/components/TopicLink';
 import Markdown from 'react-markdown';
 
 interface PostContentProps {
@@ -41,9 +41,7 @@ const PostContent = ({ post }: PostContentProps) => {
             </p>
           </div>
         </section>
-        <TopicLink to={`/topics/${post?.topic.id}`} classes={['self-center']}>
-          {post?.topic.title}
-        </TopicLink>
+        <TopicLink topic={post?.topic} classes={['self-center']} />
       </section>
       <h1 className="font-semibold text-3xl lg:text-5xl leading-[1.3]">
         {post?.title}

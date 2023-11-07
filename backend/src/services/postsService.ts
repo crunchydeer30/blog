@@ -10,7 +10,7 @@ const buildPostQuery = (query: object) => {
   const params = [];
 
   if ('q' in query)
-    params.push({ title: { contains: query.q as string, mode: 'insensitive' } });
+    params.push({ title: { contains: query.q as string, mode: 'insensitive' as const } });
   if ('author' in query)
     params.push({ author: { id: query.author as string } });
   if ('topic' in query)

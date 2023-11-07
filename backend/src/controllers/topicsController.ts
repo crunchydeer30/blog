@@ -7,9 +7,11 @@ import createHttpError from 'http-errors';
 
 const topicRouter = Router();
 
-topicRouter.get('/', async (_req, res, next) => {
+topicRouter.get('/', async (req, res, next) => {
+  const query = req.query;
+
   try {
-    const topics = await topicsService.getAll();
+    const topics = await topicsService.getAll(query);
     return res.status(200).json(topics);
   } catch (e) {
     return next(e);
