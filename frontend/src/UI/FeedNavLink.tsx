@@ -11,7 +11,6 @@ const FeedNavLink = (props: FeedNavLinkProps) => {
   return (
     <NavLink
       to={props.to}
-      end
       className={({ isActive }) =>
         [
           'font-light text-lg transition hover:text-primary border-b-2 hover:border-primary py-2 px-1',

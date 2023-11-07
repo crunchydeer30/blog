@@ -4,8 +4,11 @@ import { UserQueryParams } from "../../users/types";
 import apiUsers from "../../users/api/apiUsers";
 import { useEffect } from "react";
 import { errorToats } from "../../../utils";
+import { useQueryClient } from "@tanstack/react-query";
 
 const useSearchUsers = (query: UserQueryParams = {}) => {
+  const queryClient = useQueryClient();
+  
   const {
     isLoading,
     isError,
@@ -25,7 +28,8 @@ const useSearchUsers = (query: UserQueryParams = {}) => {
 
   useEffect(() => {
     if (error) errorToats(error);
-  }, [error]);
+    queryClient.invalidateQueries({queryKey: ['searchHistory']});
+  }, [error, queryClient]);
 
   return {
     isLoading,

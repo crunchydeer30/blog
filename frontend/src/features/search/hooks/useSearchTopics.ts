@@ -4,8 +4,11 @@ import { useEffect } from "react";
 import { errorToats } from "../../../utils";
 import { queryToQueryKey } from "../../../utils";
 import { TopicQueryParams } from "../../topics/types";
+import { useQueryClient } from "@tanstack/react-query";
 
 const useSearchTopics = (query: TopicQueryParams = {}) => {
+  const queryClient = useQueryClient();
+
   const {isLoading, data: topics, error} = useQuery({
     queryKey: ['search', 'topics', ...queryToQueryKey(query)],
     queryFn: async () => await apiTopics.getAll(query),
@@ -13,7 +16,8 @@ const useSearchTopics = (query: TopicQueryParams = {}) => {
 
   useEffect(() => {
     if (error) errorToats(error);
-  }, [error]);
+    queryClient.invalidateQueries({queryKey: ['searchHistory']});
+  }, [error, queryClient]);
 
   return {
     isLoading,

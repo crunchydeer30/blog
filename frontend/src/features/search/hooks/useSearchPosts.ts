@@ -4,8 +4,11 @@ import { PostQueryParams } from "../../posts/types";
 import apiPosts from "../../posts/api/apiPosts";
 import { useEffect } from "react";
 import { errorToats } from "../../../utils";
+import { useQueryClient } from "@tanstack/react-query";
 
 const useSearchPosts = (query: PostQueryParams = {}) => {
+  const queryClient = useQueryClient();
+
   const {
     isLoading,
     isError,
@@ -25,7 +28,8 @@ const useSearchPosts = (query: PostQueryParams = {}) => {
 
   useEffect(() => {
     if (error) errorToats(error);
-  }, [error]);
+    queryClient.invalidateQueries({queryKey: ['searchHistory']});
+  }, [error, queryClient]);
 
   return {
     isLoading,
