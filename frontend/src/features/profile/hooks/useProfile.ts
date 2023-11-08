@@ -7,13 +7,13 @@ import apiProfile from '../api/apiProfile';
 
 const useProfile = (profileId: string = '') => {
   const { id } = useParams();
-
+  
   const {
     data: profile,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['users', id],
+    queryKey: ['users', profileId || id],
     queryFn: async () => apiProfile.getById(profileId || id as string),
     retry: false,
   });

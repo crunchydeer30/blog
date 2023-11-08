@@ -27,6 +27,9 @@ const useUpdateProfile = () => {
       navigate('/');
       queryClient.invalidateQueries({ queryKey: ['user'] });
       queryClient.invalidateQueries({ queryKey: ['users', user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ['latestPosts'] });
+      queryClient.invalidateQueries({ queryKey: ['followingPosts'] });
     },
   });
 

@@ -6,16 +6,17 @@ import TextArea from '../../../UI/Form/TextArea';
 import CropImageInput from '../../imageCropper/components/CropImageInput';
 import Button from '../../../UI/Elements/Button/Button';
 import useUpdateProfile from '../hooks/useUpdateProfile';
-import { UserProfile } from '../types';
+import useProfile from '../hooks/useProfile';
+import useUser from '../../authentication/hooks/useUser';
 
-interface ProfileEditFormProps {
-  profile: UserProfile;
-}
 
-const ProfileEditForm = ({ profile }: ProfileEditFormProps) => {
-  const [displayName, setDisplayName] = useState(profile.displayName);
-  const [personalInfo, setPersonalInfo] = useState(profile.personalInfo);
-  const [profileImage, setProfileImage] = useState(profile.profileImage);
+const ProfileEditForm = () => {
+  const { user } = useUser();
+  const { profile } = useProfile(user?.id);
+
+  const [displayName, setDisplayName] = useState(profile?.displayName || '');
+  const [personalInfo, setPersonalInfo] = useState(profile?.personalInfo || '');
+  const [profileImage, setProfileImage] = useState(profile?.profileImage || '');
 
   const { updateProfile } = useUpdateProfile();
 

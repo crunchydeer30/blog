@@ -29,6 +29,7 @@ const TextArea = (props: ITextAreaProps) => {
       id={props.name}
       placeholder={props.placeholder || ''}
       className={classNames.join(' ')}
+      defaultValue={props.value}
       onChange={(e) => props.onChange(e.target.value)}
     >
     </textarea>
