@@ -23,18 +23,18 @@ const UserItem = ({ user }: UserItemProps) => {
   );
 
   return (
-    <article className="flex gap-4 items-center justify-between">
+    <article className="flex gap-12 items-center justify-between">
       <section className="flex gap-4 sm:gap-6 items-center">
         <Link
           to={`/users/${user.id}`}
-          className="w-12 h-12 rounded-full overflow-hidden border-[1px] border-gray-200"
+          className="shrink-0 w-12 h-12 rounded-full overflow-hidden border-[1px] border-gray-200"
         >
-          <img src={user.profileImage} alt="profile image" />
+          <img src={user.profileImage} alt="profile image" className='w-full h-full object-cover' />
         </Link>
         <div>
           <Link to={`/users/${user.id}`} className='text-lg'>{user.displayName}</Link>
           {user.personalInfo && (
-            <p className="text-secondary text-xs line-clamp-2 max-w-1/2">
+            <p className="text-secondary text-xs line-clamp-2 max-w-[350px]">
               {user.personalInfo}
             </p>
           )}

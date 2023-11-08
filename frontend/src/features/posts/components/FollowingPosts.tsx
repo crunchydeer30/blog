@@ -3,6 +3,7 @@ import useFollowingPosts from '../hooks/useFollowingPosts';
 import Feed from './PostFeed';
 import NotFoundText from '../../../UI/NotFoundText';
 import PostFeedLoader from '../../../UI/Elements/Loaders/PostFeedLoader';
+import AuthPrompt from '../../authentication/components/AuthPrompt';
 
 const FollowingPosts = () => {
   const { user } = useUser();
@@ -16,7 +17,9 @@ const FollowingPosts = () => {
     isError
   } = useFollowingPosts({ pageSize: 5 });
 
-  if (!user) return <NotFoundText>Please Sign In to follow authors</NotFoundText>;
+  if (!user) return <AuthPrompt>
+    <p className='text-xl'>Sign In to follow authors</p>
+  </AuthPrompt>;
   if (isLoading) return <PostFeedLoader />
   if (!followingPosts?.length) return <NotFoundText>Follow authors to get the latest stories</NotFoundText>;
 
