@@ -7,7 +7,7 @@ import { Navigate } from 'react-router-dom';
 
 import HomePage from './pages/HomePage';
 import AppLayout from './UI/Layout/AppLayout';
-import NotificationsPage from './pages/NotificationsPage';
+// import NotificationsPage from './pages/NotificationsPage';
 import PageNotFound from './pages/PageNotFound';
 import CreatePostPage from './pages/CreatePostPage';
 import LatestPosts from './features/posts/components/LatestPosts';
@@ -28,6 +28,7 @@ import SearchPosts from './features/search/components/SearchPosts';
 import SearchUsers from './features/search/components/SearchUsers';
 import SearchTopics from './features/search/components/SearchTopics';
 import TopicPage from './pages/TopicPage';
+import PageNotImplemented from './pages/PageNotImplemented';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,7 +39,7 @@ const router = createBrowserRouter(
         <Route path="latest" element={<LatestPosts />} />
         <Route path="following" element={<FollowingPosts />} />
       </Route>
-      <Route path="notifications" element={<NotificationsPage />} />
+      <Route path="notifications" element={<PageNotImplemented />} />
       <Route
         path="create"
         element={
