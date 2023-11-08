@@ -1,8 +1,11 @@
 import useReadingToday from "../../../features/posts/hooks/useReadingToday";
 import PostItemSM from "../../../features/posts/components/PostItemSM";
+import { BulletList } from "react-content-loader";
 
 const ReadingToday = () => {
-  const { posts } = useReadingToday();
+  const { posts, isLoading } = useReadingToday();
+
+  if (isLoading) return <BulletList />
 
   return (
     <section className="flex flex-col gap-6">
