@@ -133,7 +133,7 @@ const updateProfileInfo = async (
       return userToUpdate.profileImage;
     if (data.profileImage === userToUpdate.profileImage)
       return userToUpdate.profileImage;
-    return (await uploadImage(data.profileImage)).url;
+    return (await uploadImage(data.profileImage)).secure_url;
   };
 
   const updatedUser = await prisma.user.update({

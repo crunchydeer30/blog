@@ -141,8 +141,8 @@ const create = async (data: createPostDto, authorId: string) => {
       content,
       authorId,
       topicId,
-      thumbnail: (await uploadImage(thumbnail)).url,
-      header: (await uploadImage(header)).url,
+      thumbnail: (await uploadImage(thumbnail)).secure_url,
+      header: (await uploadImage(header)).secure_url,
     },
   });
 
