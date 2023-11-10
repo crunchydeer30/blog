@@ -7,10 +7,11 @@ import { parseToken } from '../utils/parsers';
 import createHttpError from 'http-errors';
 import UpdateUserProfileDto from '../dto/updateUserProfileDto';
 import subscriptionsService from '../services/subscriptionsService';
+import { auth } from '../utils/middleware';
 
 const usersRouter = Router();
 
-usersRouter.get('/', async (req, res, next) => {
+usersRouter.get('/', auth.optional, async (req, res, next) => {
   const query = req.query;
 
   try {
@@ -21,7 +22,7 @@ usersRouter.get('/', async (req, res, next) => {
   }
 });
 
-usersRouter.get('/:id', async (req, res, next) => {
+usersRouter.get('/:id', auth.optional, async (req, res, next) => {
   try {
     const user = await usersService.getById(req.params.id);
     return res.status(200).json(user);
@@ -30,7 +31,7 @@ usersRouter.get('/:id', async (req, res, next) => {
   }
 });
 
-usersRouter.get('/:id/profile', async (req, res, next) => {
+usersRouter.get('/:id/profile', auth.optional, async (req, res, next) => {
   try {
     const user = await usersService.getById(req.params.id);
     return res.status(200).json(user);
@@ -39,7 +40,7 @@ usersRouter.get('/:id/profile', async (req, res, next) => {
   }
 });
 
-usersRouter.get('/:id/followers', async (req, res, next) => {
+usersRouter.get('/:id/followers', auth.optional, async (req, res, next) => {
   try {
     const subscribers = await subscriptionsService.getFollowers(req.params.id);
     return res.status(200).json(subscribers);
@@ -48,7 +49,7 @@ usersRouter.get('/:id/followers', async (req, res, next) => {
   }
 });
 
-usersRouter.get('/:id/following', async (req, res, next) => {
+usersRouter.get('/:id/following', auth.optional, async (req, res, next) => {
   try {
     const subscribers = await subscriptionsService.getFollowing(req.params.id);
     return res.status(200).json(subscribers);
@@ -57,10 +58,8 @@ usersRouter.get('/:id/following', async (req, res, next) => {
   }
 });
 
-usersRouter.put('/:id/profile', validationMiddleware(UpdateUserProfileDto), async (req, res, next) => {
+usersRouter.put('/:id/profile', auth.required, validationMiddleware(UpdateUserProfileDto), async (req, res, next) => {
   const { id } = req.params;
-  if(!res.locals.user) return next(createHttpError.Unauthorized('Not authorized'));
-  
   try {
     const user = parseToken(res.locals.user);
     if (user.userId !== id) return next(createHttpError.Unauthorized('Not authorized'));
@@ -75,6 +74,7 @@ usersRouter.put('/:id/profile', validationMiddleware(UpdateUserProfileDto), asyn
 
 usersRouter.post(
   '/',
+  auth.optional,
   validationMiddleware(CreateUserDto),
   async (req, res, next) => {
     const data = req.body as CreateUserDto;
@@ -87,7 +87,7 @@ usersRouter.post(
   }
 );
 
-usersRouter.delete('/:id', async (req, res, next) => {
+usersRouter.delete('/:id', auth.admin, async (req, res, next) => {
   const { id } = req.params;
 
   try {

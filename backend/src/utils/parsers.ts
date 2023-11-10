@@ -2,7 +2,7 @@ import { UserToken } from '../types';
 import createHttpError from 'http-errors';
 
 export const parseToken = (token: unknown) => {
-  if (token && typeof token == 'object' && 'userId' in token && 'username' in token) {
+  if (token && typeof token == 'object' && 'userId' in token && 'username' in token && 'role' in token) {
     return token as UserToken;
   }
   throw new createHttpError.Unauthorized('Invalid token');

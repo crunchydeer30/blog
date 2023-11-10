@@ -8,6 +8,8 @@ import {
   PrismaClientUnknownRequestError,
 } from '@prisma/client/runtime/library';
 import { HttpError } from 'http-errors';
+import { Role } from '@prisma/client';
+import { UserToken } from '../types';
 
 const getToken = (req: Request) => {
   if (!req.headers.authorization) {
@@ -57,6 +59,25 @@ export const extractUser = (
   }
 
   return next();
+};
+
+export const auth = {
+  optional: (_req: Request, res: Response, next: NextFunction) => {
+    const user = res.locals.user as UserToken; 
+    if (!user) return next();
+    return next();
+  },
+  required: (_req: Request, res: Response, next: NextFunction) => {
+    const user = res.locals.user as UserToken; 
+    if (!user) return res.status(401).json({ message: 'Not authenticated' });
+    return next();
+  },
+  admin: (_req: Request, res: Response, next: NextFunction) => {
+    const user = res.locals.user as UserToken; 
+    if (!user) return res.status(401).json({ message: 'Not authenticated' });
+    if (user.role !== Role.ADMIN) return res.status(403).json({ message: 'Forbidden' });
+    return next();
+  }
 };
 
 export const errorHandler = (

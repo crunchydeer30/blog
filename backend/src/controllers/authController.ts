@@ -22,7 +22,7 @@ authRouter.post(
       if (!passwordsMatch)
         return next(createHttpError.Unauthorized('Invalid password'));
 
-      const token: string = createJWT(user.id, user.username);
+      const token: string = createJWT(user.id, user.username, user.role);
       return res
         .status(200)
         .json({

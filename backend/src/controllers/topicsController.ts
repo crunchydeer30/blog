@@ -4,10 +4,11 @@ import CreateTopicDto from '../dto/createTopicDto';
 import { validationMiddleware } from '../validation';
 import topicsService from '../services/topicsService';
 import createHttpError from 'http-errors';
+import { auth } from '../utils/middleware';
 
 const topicRouter = Router();
 
-topicRouter.get('/', async (req, res, next) => {
+topicRouter.get('/', auth.optional, async (req, res, next) => {
   const query = req.query;
 
   try {
@@ -18,7 +19,7 @@ topicRouter.get('/', async (req, res, next) => {
   }
 });
 
-topicRouter.get('/:id', async (req, res, next) => {
+topicRouter.get('/:id', auth.optional, async (req, res, next) => {
   try {
     const topic = await topicsService.getById(req.params.id);
     return res.status(200).json(topic);
@@ -29,6 +30,7 @@ topicRouter.get('/:id', async (req, res, next) => {
 
 topicRouter.post(
   '/',
+  auth.admin,
   validationMiddleware(CreateTopicDto),
   async (req, res, next) => {
     if (!res.locals.user)

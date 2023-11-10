@@ -131,8 +131,6 @@ const getById = async (id: string): Promise<PostItem> => {
 
 const create = async (data: createPostDto, authorId: string) => {
   const { title, description, content, topicId, thumbnail, header } = data;
-  console.log('Data unpacked');
-  console.log('Prisma started');
   
   const newPost = await prisma.post.create({
     data: {
@@ -145,8 +143,6 @@ const create = async (data: createPostDto, authorId: string) => {
       header: (await uploadImage(header)).secure_url,
     },
   });
-
-  console.log('Prisma finished');
   
   return newPost;
 };

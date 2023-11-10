@@ -9,10 +9,11 @@ import { validationMiddleware } from '../validation';
 import createPostDto from '../dto/createPostDto';
 import CreateCommentDto from '../dto/createCommentDto';
 import { parseToken } from '../utils/parsers';
+import { auth } from '../utils/middleware';
 
 const postsRouter = Router();
 
-postsRouter.get('/', async (req, res, next) => {
+postsRouter.get('/', auth.optional, async (req, res, next) => {
   const query = req.query;
 
   try {
@@ -23,10 +24,7 @@ postsRouter.get('/', async (req, res, next) => {
   }
 });
 
-postsRouter.get('/following', async (req, res, next) => {
-  if (!res.locals.user)
-    return next(createHttpError.Unauthorized('Not authorized'));
-
+postsRouter.get('/following', auth.required, async (req, res, next) => {
   const query = req.query;
 
   try {
@@ -38,7 +36,7 @@ postsRouter.get('/following', async (req, res, next) => {
   }
 });
 
-postsRouter.get('/:id', async (req, res, next) => {
+postsRouter.get('/:id', auth.optional, async (req, res, next) => {
   try {
     const blog = await postsService.getById(req.params.id);
     return res.status(200).json(blog);
@@ -47,7 +45,7 @@ postsRouter.get('/:id', async (req, res, next) => {
   }
 });
 
-postsRouter.get('/:id/comments', async (req, res, next) => {
+postsRouter.get('/:id/comments', auth.optional, async (req, res, next) => {
   const { id: postId } = req.params;
   if (!postId) return next(createHttpError.NotFound('Missing ID'));
 
@@ -61,18 +59,13 @@ postsRouter.get('/:id/comments', async (req, res, next) => {
 
 postsRouter.post(
   '/',
+  auth.required,
   validationMiddleware(createPostDto),
   async (req, res, next) => {
-    if (!res.locals.user)
-      return next(createHttpError.Unauthorized('Not authorized'));
-
     try {
       const loggedUser = parseToken(res.locals.user);
-      const data = req.body as createPostDto;
-      console.log('Data initialized');
-      
+      const data = req.body as createPostDto;      
       const newBlog = await postsService.create(data, loggedUser.userId);
-      console.log('Returning');
       return res.status(201).json(newBlog);
     } catch (e) {
       return next(e);
@@ -82,6 +75,7 @@ postsRouter.post(
 
 postsRouter.post(
   '/:id/comments',
+  auth.required,
   validationMiddleware(CreateCommentDto),
   async (req, res, next) => {
     if (!res.locals.user)
@@ -105,15 +99,10 @@ postsRouter.post(
   }
 );
 
-postsRouter.delete('/:id', async (req, res, next) => {
-  const { id } = req.params;
-
-  if (!res.locals.user)
-    return next(createHttpError.Unauthorized('Not authorized'));
-
+postsRouter.delete('/:id', auth.required, async (req, res, next) => {
   try {
     const loggedUser = parseToken(res.locals.user);
-    const blog = await postsService.getById(id);
+    const blog = await postsService.getById(req.params.id);
     if (blog.authorId !== loggedUser.userId)
       return next(createHttpError.Unauthorized(''));
 

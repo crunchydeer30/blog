@@ -3,10 +3,10 @@ import { Router } from 'express';
 import createHttpError from 'http-errors';
 import bookmarksService from '../services/bookmarksService';
 import { parseToken } from '../utils/parsers';
-
+import { auth } from '../utils/middleware';
 const bookmarksRouter = Router();
 
-bookmarksRouter.post('/:id', async (req, res, next) => {
+bookmarksRouter.post('/:id', auth.required, async (req, res, next) => {
   if (!res.locals.user)
     return next(createHttpError.Unauthorized('Not authorized'));
 
@@ -22,10 +22,7 @@ bookmarksRouter.post('/:id', async (req, res, next) => {
   }
 });
 
-bookmarksRouter.get('/', async (_req, res, next) => {
-  if (!res.locals.user)
-    return next(createHttpError.Unauthorized('Not authorized'));
-
+bookmarksRouter.get('/', auth.required, async (_req, res, next) => {
   try {
     const loggedUser = parseToken(res.locals.user);
     const bookmarks = await bookmarksService.getAll(loggedUser.userId);
@@ -35,10 +32,7 @@ bookmarksRouter.get('/', async (_req, res, next) => {
   }
 });
 
-bookmarksRouter.get('/IDs', async (_req, res, next) => {
-  if (!res.locals.user)
-    return next(createHttpError.Unauthorized('Not authorized'));
-
+bookmarksRouter.get('/IDs', auth.required, async (_req, res, next) => {
   try {
     const loggedUser = parseToken(res.locals.user);
 
@@ -49,10 +43,7 @@ bookmarksRouter.get('/IDs', async (_req, res, next) => {
   }
 });
 
-bookmarksRouter.delete('/:id', async (req, res, next) => {
-  if (!res.locals.user)
-    return next(createHttpError.Unauthorized('Sign In to add bookmarks'));
-
+bookmarksRouter.delete('/:id', auth.required, async (req, res, next) => {
   const postId = req.params.id;
   if (!postId) return next(createHttpError.BadRequest('Missing id'));
 

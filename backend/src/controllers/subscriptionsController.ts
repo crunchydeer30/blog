@@ -1,17 +1,13 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
-import createHttpError from 'http-errors';
 import subscriptionsService from '../services/subscriptionsService';
 import { parseToken } from '../utils/parsers';
+import { auth } from '../utils/middleware';
 
 const subscriptionRouter = Router();
 
-subscriptionRouter.post('/:id', async (req, res, next) => {
-  if (!res.locals.user)
-    return next(createHttpError.Unauthorized('Sign In to follow authors'));
-
+subscriptionRouter.post('/:id', auth.required, async (req, res, next) => {
   const { id: followingId } = req.params;
-  if (!followingId) return next(createHttpError.BadRequest('Missing id'));
 
   try {
     const loggedUser = parseToken(res.locals.user);
@@ -26,10 +22,7 @@ subscriptionRouter.post('/:id', async (req, res, next) => {
   }
 });
 
-subscriptionRouter.delete('/:id', async (req, res, next) => {
-  if (!res.locals.user)
-    return next(createHttpError.Unauthorized('Sign In to unfollow authors'));
-
+subscriptionRouter.delete('/:id', auth.required, async (req, res, next) => {
   const { id: followingId } = req.params;
 
   try {
@@ -41,11 +34,7 @@ subscriptionRouter.delete('/:id', async (req, res, next) => {
   }
 });
 
-subscriptionRouter.get('/', async (_req, res, next) => {
-  console.log('begin');
-  if (!res.locals.user)
-    return next(createHttpError.Unauthorized('Not authorized'));
-
+subscriptionRouter.get('/', auth.required, async (_req, res, next) => {
   try {
     const loggedUser = parseToken(res.locals.user);
     const subscriptions = await subscriptionsService.getAll(loggedUser.userId);

@@ -1,8 +1,10 @@
-import { Post, Topic, User } from '@prisma/client';
+import { Post, Topic, User, Role } from '@prisma/client';
+
 
 export interface UserToken {
   userId: string;
   username: string;
+  role: Role;
 }
 
 export interface PostItem extends Post {
