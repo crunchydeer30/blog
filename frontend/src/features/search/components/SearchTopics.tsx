@@ -10,8 +10,8 @@ const SearchTopics = () => {
 
   const { topics, isLoading } = useSearchTopics({q: q || ''});
 
-  if (!topics?.length) return <NotFoundText>No Topics found</NotFoundText>;
   if (isLoading) return <Spinner />;
+  if (!topics?.length) return <NotFoundText>No Topics found</NotFoundText>;
 
   return (
     <section className="flex gap-2 flex-wrap">

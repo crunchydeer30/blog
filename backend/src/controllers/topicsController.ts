@@ -3,7 +3,6 @@ import { Router } from 'express';
 import CreateTopicDto from '../dto/createTopicDto';
 import { validationMiddleware } from '../validation';
 import topicsService from '../services/topicsService';
-import createHttpError from 'http-errors';
 import { auth } from '../utils/middleware';
 
 const topicRouter = Router();
@@ -33,9 +32,6 @@ topicRouter.post(
   auth.admin,
   validationMiddleware(CreateTopicDto),
   async (req, res, next) => {
-    if (!res.locals.user)
-      return next(createHttpError.Unauthorized('Not authorized'));
-
     try {
       const data = req.body as CreateTopicDto;
       const newTopic = await topicsService.create(data);

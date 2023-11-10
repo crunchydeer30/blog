@@ -1,17 +1,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
-import createHttpError from 'http-errors';
 import bookmarksService from '../services/bookmarksService';
 import { parseToken } from '../utils/parsers';
 import { auth } from '../utils/middleware';
 const bookmarksRouter = Router();
 
 bookmarksRouter.post('/:id', auth.required, async (req, res, next) => {
-  if (!res.locals.user)
-    return next(createHttpError.Unauthorized('Not authorized'));
-
   const { id: postId } = req.params;
-  if (!postId) return next(createHttpError.BadRequest('Missing id'));
 
   try {
     const loggedUser = parseToken(res.locals.user);
@@ -45,7 +40,6 @@ bookmarksRouter.get('/IDs', auth.required, async (_req, res, next) => {
 
 bookmarksRouter.delete('/:id', auth.required, async (req, res, next) => {
   const postId = req.params.id;
-  if (!postId) return next(createHttpError.BadRequest('Missing id'));
 
   try {
     const loggedUser = parseToken(res.locals.user);

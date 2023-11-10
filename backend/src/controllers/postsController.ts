@@ -47,8 +47,6 @@ postsRouter.get('/:id', auth.optional, async (req, res, next) => {
 
 postsRouter.get('/:id/comments', auth.optional, async (req, res, next) => {
   const { id: postId } = req.params;
-  if (!postId) return next(createHttpError.NotFound('Missing ID'));
-
   try {
     const comments = await commentsService.getByPostId(postId);
     return res.status(200).json(comments);
@@ -78,9 +76,6 @@ postsRouter.post(
   auth.required,
   validationMiddleware(CreateCommentDto),
   async (req, res, next) => {
-    if (!res.locals.user)
-      return next(createHttpError.Unauthorized('Not authorized'));
-
     const { id: postId } = req.params;
 
     try {
