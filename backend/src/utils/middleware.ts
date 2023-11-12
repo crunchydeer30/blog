@@ -10,6 +10,7 @@ import {
 import { HttpError } from 'http-errors';
 import { Role } from '@prisma/client';
 import { UserToken } from '../types';
+import createHttpError from 'http-errors';
 
 const getToken = (req: Request) => {
   if (!req.headers.authorization) {
@@ -62,20 +63,18 @@ export const extractUser = (
 };
 
 export const auth = {
-  optional: (_req: Request, res: Response, next: NextFunction) => {
-    const user = res.locals.user as UserToken; 
-    if (!user) return next();
+  optional: (_req: Request, _res: Response, next: NextFunction) => {
     return next();
   },
   required: (_req: Request, res: Response, next: NextFunction) => {
     const user = res.locals.user as UserToken; 
-    if (!user) return res.status(401).json({ message: 'Not authenticated' });
+    if (!user) throw new createHttpError.Unauthorized('Not Authorized');
     return next();
   },
   admin: (_req: Request, res: Response, next: NextFunction) => {
     const user = res.locals.user as UserToken; 
-    if (!user) return res.status(401).json({ message: 'Not authenticated' });
-    if (user.role !== Role.ADMIN) return res.status(403).json({ message: 'Forbidden' });
+    if (!user) throw new createHttpError.Unauthorized('Not Authorized');
+    if (user.role !== Role.ADMIN) throw new createHttpError.Forbidden('Forbidden');
     return next();
   }
 };
